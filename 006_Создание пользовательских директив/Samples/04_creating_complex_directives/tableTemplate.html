@@ -1,0 +1,14 @@
+﻿<table class="table table-striped">
+    <thead>
+        <tr class="h3">
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in data">
+            <td>{{item.itemName}}</td>
+            <td>{{item.itemPrice | currency}}</td>
+        </tr>
+    </tbody>
+</table>

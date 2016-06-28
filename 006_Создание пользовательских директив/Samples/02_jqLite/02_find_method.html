@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>jqLite</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .directive("customDirective", function () {
+            return function (scope, element, attributes) {
+                //метод children хорош но только если вам нужно выбрать непосредственно дочерний элемент по отношению к текущему
+                //если же вам нужно выбрать все элементы которые имеют определенные значения то нужно использовать метод find()
+                //который будет проходить по всем вложенным элементам и так же проверять их
+                var elements = element.find("li");
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements.eq(i).text() == "Red") {
+                        elements.eq(i).css("color", "red");
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Colors</h3>
+        </div>
+        <div class="panel-body h3">
+            <ul custom-directive>
+                <li>Red</li>
+                <li>Black</li>
+                <ul>
+                    <li>Red</li>
+                    <li>Coral</li>
+                </ul>
+                <li>Yellow</li>
+                <li>Navy</li>
+                <li>Green</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

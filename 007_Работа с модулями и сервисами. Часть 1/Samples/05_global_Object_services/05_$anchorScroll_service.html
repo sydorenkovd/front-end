@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<!--$anchorScroll сервис выполняет прокрутку документа до того элемента id которого возвращается $location.hash() методом-->
+<html ng-app="studyModule">
+<head>
+    <title>DOM API Service</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+//        .config(function ($anchorScrollProvider) {
+//            $anchorScrollProvider.disableAutoScrolling();
+//        })
+        //используйте $anchorScrollProvider для устранение эффекта auto-scroll
+        .controller("studyCtrl", function ($scope, $location, $anchorScroll) {
+            //при использовании сервиса $anchorScroll не нужно использовать service объект, просто нужно указать dependency
+            //когда объект сервиса уже создан он начинает следить за значением свойства hash $location сервиса и прокрутка 
+            //выполняется автоматически когда значение свойства меняется
+            $scope.itemCount = 100;
+            $scope.items = [];
+            for (var i = 0; i < $scope.itemCount; i++) {
+                $scope.items[i] = "Item " + i;
+            }
+            $scope.show = function (id) {
+                $location.hash(id);
+                if (id == 'bottom') {
+                    $anchorScroll();
+                }
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-default">
+        <h4 class="panel-heading">URL</h4>
+        <div class="panel-body">
+            <p id="top">This is the top</p>
+            <button class="btn btn-primary" ng-click="show('bottom')">Go to bottom</button>
+            <p>
+                <ul>
+                    <li ng-repeat="item in items">{{item}}</li>
+                </ul>
+            </p>
+            <p id="bottom">This is the bottom</p>
+            <button class="btn btn-primary" ng-click="show('top')">Go to TOP</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--еще одна возможность isolated scope это определять вызов функции в качестве значения атрибута и выполнять функцию из scope контроллера-->
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script type="text/ng-template" id="template">
+        <div class="panel panel-success">
+            <div class="panel-heading"><p>What is {{fruit}}? {{getType()}}</p></div>            
+        </div>
+    </script>
+    <script>
+        angular.module("studyModule", [])
+        .directive("scopeExample", function () {
+            return {
+                template: function () {
+                    return angular.element(document.querySelector("#template")).html();
+                },
+                scope: {
+                    fruit: "=fruitName",
+                    getType: "&value"
+                    //& указывает что значение свойства getType будет привязано к функции 
+                }
+            }
+        })
+        .controller("studyCtrl", function ($scope) {
+            $scope.data = { fruit: "Apple" };
+            $scope.getKind = function (value) {
+                return value == "Apple" ? " It's a Fruit" : " I don't know :(";
+            }
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="studyCtrl" class="panel panel-warning">
+        <div class="panel-heading">
+            Binding Source: <input ng-model="data.fruit" />
+        </div>
+        <div class="panel-body" scope-example value="getKind(data.fruit)" fruit-name="data.fruit"></div>
+        <!--3) при изменении модели будет изменятся значение свойства data.fruit-->
+    </div>
+</body>
+</html>

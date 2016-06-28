@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Template directives</title>
+    <!--шаблонные директивы используются для того чтобы генерировать html по шаблону, облегчить работу с коллекциями даных и для добавления базовой логики на страницу-->
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: false },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: false },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: true },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: false }
+            ];
+        });
+    </script>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <!--генерация однотипных элементов самая распространенная задаче в разработке для этого следует использовать директиву ng-repeat-->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Done</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="task in tasks">
+                    <td ng-repeat="(key, value) in task">
+                        <!--при таком использовании первое значение всегда указывает на ключ а второе непосредственно на само значение-->
+                        {{key}} - {{value}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

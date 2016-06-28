@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Basic Controller</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.cities = ["London", "New York", "Paris"];
+            $scope.getCountry = function (city) {
+                switch (city) {
+                    case "London":
+                        return "UK";
+                    case "New York":
+                        return "USA";
+                };
+            };
+            //изменяя значения в scope изменяются все привязки для этого значения
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>The city is: {{city}}</h4>
+            <h4>The country is : {{getCountry(city) || "Unknown"}}</h4>
+        </div>
+        <div class="panel-body">
+            <label class="h4">Select a City:</label>
+            <select ng-options="city for city in cities" ng-model="city">
+                <!--когда пользователь выбирает элемент то содержимое этого элемента блягодаря ng-model записывается в city
+                и далее при вызове getCountry() в качестве аргумента передается созданный city-->
+            </select>
+        </div>
+    </div>
+</body>
+</html>

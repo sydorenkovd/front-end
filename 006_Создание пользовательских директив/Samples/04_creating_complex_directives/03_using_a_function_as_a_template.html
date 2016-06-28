@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<!--в предыдущем примере в качестве шаблона использовалась строка с HTML разметкой
+но в качестве шаблона может выступать так же функция которая создает или возвращает шаблон-->
+<html ng-app="studyModule">
+<head>
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script type="text/template" id="template">
+        <ol>
+            <li ng-repeat='item in data'>{{item.itemName}}</li>
+        </ol>
+    </script>
+    <script>
+        angular.module("studyModule", [])
+            .directive("orderedList", function () {
+                return {
+                    link: function (scope, element, attributes) {
+                        scope.data = scope[attributes["orderedList"]];
+                    },
+                    restrict: "A",
+                    template: function () {
+                        return angular.element(document.querySelector("#template")).html();
+                        //jqLite не позволяет выбрать элемент по его id а подключать JQuery для этого не имеет смысла
+                        //поэтому здесь используется метод DOM API для выбора элемента document.querySelector
+                    }
+                }
+            })
+        .controller("studyCtrl", function ($scope) {
+            $scope.items = [
+                { itemName: "Table", itemPrice: 44.10 },
+                { itemName: "Chair", itemPrice: 21.20 },
+                { itemName: "Pillow", itemPrice: 12.20 },
+                { itemName: "Picture", itemPrice: 112.70 },
+                { itemName: "Lamp", itemPrice: 28.31 }
+            ];
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Items</h3>
+        </div>
+        <div class="panel-body h3">
+            <div ordered-list="items"></div>
+        </div>
+    </div>
+</body>
+</html>

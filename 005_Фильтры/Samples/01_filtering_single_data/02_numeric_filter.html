@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Numeric Filter</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.items = [
+                { itemName: "Milk", itemCategory: "Dairy", itemPrice: 1.40, expireDate: 1 },
+                { itemName: "Cheese", itemCategory: "Dairy", itemPrice: 2.40, expireDate: 2 },
+                { itemName: "Water", itemCategory: "Drinks", itemPrice: 1.20, expireDate: 366 },
+                { itemName: "Juice", itemCategory: "Drinks", itemPrice: 3.30, expireDate: 60 },
+                { itemName: "Potato", itemCategory: "Vegetable", itemPrice: 5.90, expireDate: 14 },
+                { itemName: "Tomato", itemCategory: "Vegetable", itemPrice: 6.88, expireDate: 9 }
+            ];
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>
+                Items in cart
+                <span class="label label-info">{{items.length}}</span>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-3" ng-repeat="item in items">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h4>{{item.itemName}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p><span class="h4">Category: </span>{{item.itemCategory}}</p>
+                            <p><span class="h4">Expire date: </span>{{item.expireDate}}</p>
+                            <p class="text-right"><span class="h4">Price: </span>{{item.itemPrice | number:0}}</p>
+                            <!--используйте фильтр number для того чтобы указать колличество знаков после запятой
+                            так же этот фильтр автоматически добавляет запятую для разделения тысяч-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

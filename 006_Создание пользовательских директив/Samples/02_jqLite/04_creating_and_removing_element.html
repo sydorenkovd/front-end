@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--jqLite предоставляет ряд методов для создания и удаления элементов разметки
+    angular.element(html) создает jqLite объект который представляет элемент HTML указанный в скобках
+    after(elements) выполняет вставку контента после элемента на котором был вызван данный метод
+    append(elements) выполняет вставку элемента как последнего дочернего элемента каждого элемента из jqLite объекта на котором был вызван метод
+    clone() возвращает новый jqLite объект который является дубликатом того объекта на котором был вызван метод
+    prepend(elements) выполняет вставку элемента как первого дочернего элемента каждого элемента из jqLite объекта на котором был вызван метод
+    remove() удаляет элементы которыe присутствуют в jqLite объекте из DOM
+    replaceWith(elements) выполняет замену элементов jqLite объекта на котором был вызван метод на элементы указанные в аргументах
+    wrap(elements) упаковывает каждый элемент из jqLite объекта в элемент указанный в аргументах-->
+<head>
+    <title>jqLite</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .directive("customDirective", function () {
+                return function (scope, element, attributes) {
+                    var elements = angular.element("<ul>");
+                    element.append(elements);
+                    for (var i = 0; i < scope.colors.length; i++) {
+                        elements.append(angular.element("<li>").text(scope.colors[i]));
+                    }
+                }
+            })
+        .controller("studyCtrl", function ($scope) {
+            $scope.colors = ["Red", "Black", "Navy", "Green", "Yellow", 'mycollor'];
+        })
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Colors</h3>
+        </div>
+        <div class="panel-body h3">
+            <div custom-directive></div>
+        </div>
+    </div>
+</body>
+</html>

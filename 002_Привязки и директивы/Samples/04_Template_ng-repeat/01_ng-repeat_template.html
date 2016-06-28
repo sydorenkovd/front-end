@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>ng-repeat</title>
+    <!--шаблоные директивы используются для того чтобы генерировать html по шаблону, облегчить работу с коллекциями даных и для добавления базовой логики на страницу-->
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: true },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: true },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: true },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: true }
+            ];
+        });
+    </script>
+    <style>
+        .odd {
+            background-color: #f7d474;
+        }
+
+        .even {
+            background-color: #d6b6f3;
+        }
+        .my{
+            background-color: #d6b6f3;
+        }
+    </style>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <!--очень часто в разработке мы сталкиваемся со случаями когда нам нужно генерировать повторно целые шаблоны и к сожалению директива ng-repeat этого не позволяет-->
+        <!--решением проблемы является использование директив ng-repeat-start и ng-repeat-end-->
+        <!--в этом случае мы четко определяем откуда у нас будет начинатся шаблон для повторения (ng-repeat-start) и где он заканчивается (ng-repeat-end)-->
+        <!--ng-repeat-start будет повторять элементы до тех пор пока не встретит ng-repeat-end далее выполняется переход на следующую итерацию-->
+        <table class="table">
+            <tr ng-repeat-start="task in tasks">
+                <td>№ {{$index}}</td>
+            </tr>
+            <tr>
+                <td>Description: {{task.action}}</td>
+            </tr>
+            <tr ng-repeat-end>
+                <td>The {{$index}} task is {{task.complete? '' : "not "}} done</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

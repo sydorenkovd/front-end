@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title></title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope, $exceptionHandler) {
+            $scope.throwEx = function () {
+                try {
+                    throw new Error("Triggered Exception");
+                } catch (ex) {
+                    $exceptionHandler(ex.message, "Button Click");
+                }
+            }
+        })
+        .factory("$exceptionHandler", function ($log) {
+            return function (exception, cause) {
+                $log.error("Message: " + exception.message + " (Cause: " + cause + ")");
+                //здесь переопределяется стандартный сервис для обработки ошибок, в данном случае изменяется формат отображения ошибки,
+                //но переопределять сервис для обработки ошибок плохая практика так как если он не будет корректно работать то это значительно
+                //усложнит работу
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <button class="btn btn-primary" ng-click="throwEx()">Throw Exception</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>ng-show and ng-hide</title>
+    <!--директивы ng-show и ng-hide используются для управления видимостью элемента в зависимости от условия
+     добавляя или удаляя css класс. Этот класс применяет dispaly:none
+    -->
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: false },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: false },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: true },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: false }
+            ];
+        });
+    </script>
+    <style>
+        td > *:first-child {
+            font-weight: bold;
+            /*обратите внимание что этот стиль применяется только к элементам с надписью Incomplete,
+            проблема состоит в том что ng-hide и ng-show оставляют в DOM элементы которые они прячут,
+            пользователь не видит эти элементы но они видны браузеру и поэтому к ним применяется стиль
+            в этой ситуации лучше удалять элементы с DOM  используя директиву ng-if*/
+        }
+    </style>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <div class="checkbox well">
+            <label>
+                <input type="checkbox" ng-model="tasks[3].complete" />
+                Task 4 is complete
+            </label>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tasks</th>
+                    <th>Done</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="task in tasks">
+                <td>{{$index + 1}}</td>
+                <td ng-repeat="property in task">{{property}}</td>
+                <td>
+
+                    <!--Основное различие между ng-show и ng-hide состоит в том, что ng-show прячет элемент когда выражение равно false, а ng-hide когда выражение равно true.
+                    
+                    ng-show(true) - отображает
+                    ng-show(false) - прячет
+                        
+                    ng-hide(true) - прячет
+                    ng-hide(false) - отображает
+                        
+                    -->
+
+
+                    <span ng-hide="task.complete">(Incomplete)</span>
+                    <span ng-show="task.complete">(Done)</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--в предыдущем примере была обнаружена ошибка, когда пользователь вводил значение в один из контролов и потом нажимал на кнопку Reverse то 
+    на измененные данные работа метода не распространялась-->
+    <title>Controller Inheritance</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />    
+    <script src="solving_problem.js"></script>
+</head>
+<body ng-controller="parentCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4>Parent controller</h4>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="reverseText()">Reverse</button>
+                    <button class="btn btn-default" type="button" ng-click="changeCase()">Case</button>
+                </span>
+                <input class="form-control" ng-model="dataObject.value" />
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading" ng-controller="firstChildCtrl">
+            <h4>First child ctrl</h4>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="reverseText()">Reverse</button>
+                    <button class="btn btn-default" type="button" ng-click="changeCase()">Case</button>
+                </span>
+                <input class="form-control" ng-model="dataObject.value" />
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-danger">
+        <div class="panel-heading" ng-controller="secondChildCtrl">
+            <h4>Second child ctrl</h4>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="reverseText()">Reverse</button>
+                    <button class="btn btn-default" type="button" ng-click="changeCase()">Case</button>
+                    <button class="btn btn-default" type="button" ng-click="shiftFour()">Shift</button>
+                </span>
+                <input class="form-control" ng-model="dataObject.value" />
+                <!--Для того чтобы быть уверенными что вы работаете с одним и тем же свойством когда используетет ng-model, создавайте свойство в объекте,
+                если же вы хотите чтобы при изменении текущего свойства создавалось новое определяйте свойство непосредственно в scope-->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

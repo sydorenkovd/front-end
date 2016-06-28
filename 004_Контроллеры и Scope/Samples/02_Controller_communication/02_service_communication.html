@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--В предыдущем контроллере использовалась техника которая применима если у вас есть один контроллер что в реальных приложениях встречается редко
+    поэтому лучше перенести логику посылки сообщения в сервис который далее смогут использовать все контроллеры
+    c помощью такого подхода так же уменьшается степень копирования кода-->
+    <title>Controller communication</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .service("ZipCodes", function ($rootScope) {
+                return {
+                    setZipCode: function (type, zip) {
+                        this[type] = zip;
+                        $rootScope.$broadcast("zipCodeUpdated", {
+                            type: type, zipCode: zip
+                        });
+                    }
+                }
+            })
+        .controller("studyCtrl", function ($scope, ZipCodes) {
+            $scope.$on("zipCodeUpdated", function (event, args) {
+                $scope[args.type] = args.zipCode;
+            });
+            $scope.setAddress = function (type, zip) {
+                ZipCodes.setZipCode(type, zip);
+                console.log("Type: " + type + " " + zip);
+            };
+            $scope.copyAddress = function () {
+                $scope.shippingZip = $scope.billingZip;
+            };
+        });
+    </script>
+</head>
+<body class="row">
+    <div class="col-xs-6">
+        <div class="panel panel-success" ng-controller="studyCtrl">
+            <div class="panel-heading">
+                <h3>Billing Zip Code</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input class="form-control" ng-model="billingZip" />
+                </div>
+                <button class="btn btn-success" ng-click="setAddress('billingZip', billingZip)">
+                    Save billing
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="panel panel-success" ng-controller="studyCtrl">
+            <div class="panel-heading"><h3>Shipping zip code</h3></div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input class="form-control" ng-model="shippingZip" />
+                </div>
+                <button class="btn btn-success" ng-click="copyAddress()">
+                    Use Billing
+                </button>
+                <button class="btn btn-success" ng-click="setAddress('shippingZip', shippingZip)">
+                    Save Shipping
+                </button>
+            </div>
+        </div>
+    </div>    
+</body>
+</html>

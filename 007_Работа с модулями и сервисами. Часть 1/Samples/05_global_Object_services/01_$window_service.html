@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<!--Основная причина почему в AngularJS доступны сервисы для работы с DOM API global objects это юнит тестирование
+использование сервисов делает тестирование намного проще так как у вас появляется возможность протестировать только тот функционал 
+который вам нужен и вы избавляетесь от проблем с зависимостями-->
+<html ng-app="studyModule">
+<head>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <title>DOM API Services</title>
+</head>
+<script>
+    angular.module("studyModule", [])
+    .controller("studyCtrl", function ($scope, $window) {
+        $scope.showHint = function (message) {
+            $window.alert(message);
+        }
+    });
+</script>
+<body ng-controller="studyCtrl" class="well">
+    <button class="btn btn-primary" ng-click="showHint('Hint!')">Click me!</button>
+</body>
+</html>

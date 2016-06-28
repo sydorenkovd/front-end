@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--в предыдущих примерах использовалось наследование scope от контроллера, но существует множество случаев когда вам не нужно 
+    наследование от scope контроллера, например вам нужен объект но вы не хотите чтобы этот объект разделялся другими директивами,
+    так же от базового scope будут наследоватся методы. Выход из такой ситуации - использовать isolated scope, при таком подходе angular
+    создает для каждого экземпляра директивы свой scope но он не наследуется от scope контроллера.-->
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script type="text/ng-template" id="customTemplate">
+        <div class="panel panel-success">            
+            <div class="panel-heading">{{data.caption}}</div>
+            <div class="panel-body">Create caption : <input ng-model="data.caption" /></div>
+        </div>
+    </script>
+    <script>
+        angular.module("studyModule", [])
+        .directive("scopeExample", function () {
+            return {
+                template: function () {
+                    return angular.element(document.querySelector("#customTemplate")).html();
+                },
+                scope: {}
+            }
+        })
+        .controller("studyCtrl", function ($scope) {            
+            $scope.data = { caption: "Caption" };            
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="studyCtrl" class="panel panel-primary">
+        <div class="panel-body" scope-example></div>
+        <div class="panel-body" scope-example></div>
+    </div>
+</body>
+</html>

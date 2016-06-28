@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script type="text/ng-template" id="customTemplate">
+        <div class="panel panel-success">
+            <div class="panel-heading"><p>Type something: <input ng-model="property" /></p></div>
+            <!--1) определяем в качестве модели свойство в isolated scope-->
+        </div>
+    </script>
+    <script>
+        angular.module("studyModule", [])
+        .directive("scopeExample", function () {
+            return {
+                template: function () {
+                    return angular.element(document.querySelector("#customTemplate")).html();
+                },
+                scope: {
+                    property: "=source"
+                    //2) с помощью = указываем two-way binding на атрибут nameprop                    
+                }
+            }
+        })
+        .controller("studyCtrl", function ($scope) {
+            $scope.data = { value: "Some Value" };
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="studyCtrl" class="panel panel-warning">
+        <div class="panel-heading">
+            Type something: <input ng-model="data.value" />
+        </div>
+        <div class="panel-body" scope-example source="data.value"></div>
+        <!--3) при изменении модели будет изменятся значение свойства data.value-->        
+    </div>
+</body>
+</html>

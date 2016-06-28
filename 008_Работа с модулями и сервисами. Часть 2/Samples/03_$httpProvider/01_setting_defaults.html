@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--если вам нужно установить настройки поу молчанию для запросов с помощью $http то для этого нужно воспользоватся сервисом $httpProvider
+    свойства $httpProvider:
+        defaults.headers.common определяет заголовки по умолчанию которые используются для всех запросов
+        defaults.headers.post определяется заголовки которые используются для POST запросов
+        defaults.headers.put определяется заголовки которые используются для PUT запросов
+        defaults.transformResponse массив функций для трансформации всех ответов
+        defaults.transformRequest массив функций для трансформации всех запросов
+        interceptors массив фабричных interceptor функций
+        withCredentials устанавливает для всех типов запросов настройку аутентификации-->
+    <title></title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .config(function ($httpProvider) {
+            $httpProvider.defaults.transformResponse.push(function (responseData, headers) {                
+                    fruits = [];
+                    var fruitElems = angular.element(responseData.trim()).find("fruit");
+                    for (var i = 0; i < fruitElems.length; i++) {
+                        var fruit = fruitElems.eq(i);
+                        fruits.push({
+                            name: fruit.attr("name"),
+                            category: fruit.attr("category"),
+                            price: fruit.attr("price")
+                        });
+                    }
+                    return fruits;                
+            })
+        })
+        .controller("studyCtrl", function ($scope, $http) {
+            $scope.getFruits = function () {
+                $http.get("../xmlData.xml").success(function (responseData) {
+                    $scope.fruits = responseData;
+                });
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div id="tasksPanel" class="panel panel-primary" ng-controller="studyCtrl">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <button class="btn btn-success" ng-click="getFruits()">
+                    <h2>Get Fruits!</h2>
+                </button>
+            </div>
+        </div>
+        <div id="panel" class="panel-body">
+            <div class="row">
+                <div ng-hide="fruits.length">
+                    <h3 class="text-center">No Data</h3>
+                </div>
+                <div class="col-sm-4 col-md-4" ng-repeat="fruit in fruits">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title text-center">
+                                <h3>{{fruit.name}}</h3>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <h3>Cost : {{fruit.price | currency}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

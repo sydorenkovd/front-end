@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--one-way binding означает что данные будут взяты из модели и вставлены в html-->
+    <!--Привязки angularjs асоциируются с данными в модели. При изменении данных модели их значение автоматически изменится-->
+    <!--Привязки можно делать только для данных, добавленных в scope-->
+    <title>One way data-binding</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: false },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: false },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: true },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: false }
+            ];
+        });
+    </script>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <div>There are {{tasks.length}} tasks</div> <!--самый популярный вид привязки-->
+        <div>
+            <!--эффект от {{}} и ng-bind один и тот же-->
+            There are <span ng-bind="tasks.length"></span> tasks <!--при таком варианте привязки нам требуется дополнительный элемент (span)-->
+        </div>
+        <div ng-bind-template="First task: {{tasks[0].action}}. Second task: {{tasks[1].action}}"></div>
+        <!--ng-bind может отобразить только одну привязку. Если вы хотите отобразить множество привязок, то используйте ng-bind-template-->
+        <!--недостатком вот таких привязок {{}} является то, что angularjs обрабатывает каждую из них. Это может составить проблему когда вы используете несколько фреймворков-->
+        <div>
+            AngularJS uses {{and}} characters for templates
+            <!--angularjs не будет жаловатся на то, что мы пытаемся привязать несуществующие данные потому что он думает, что они будут созданы позже.
+            Если мы ссылаемся в привязке на данные, которых не существует, то эта привязка просто не отобразится-->
+        </div>
+        <div ng-non-bindable>
+            AngularJS uses {{and}} characters for templates
+        </div>
+    </div>
+</body>
+</html>

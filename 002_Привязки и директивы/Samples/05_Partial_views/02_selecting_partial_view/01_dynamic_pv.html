@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Partial view</title>
+    <!--шаблоные директивы используются для того чтобы генерировать html по шаблону, облегчить работу с коллекциями даных и для добавления базовой логики на страницу-->
+    <script src="../../angular.min%20.js"></script>
+    <link href="../../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: true },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: true },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: true },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: true }
+            ];
+            $scope.changeView = function () {
+                return $scope.list ? "../list.html" : "../table.html";
+            };
+        });
+    </script>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <div class="well">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="list" />
+                    Use the list view
+                </label>
+            </div>
+        </div>
+        <ng-include src="changeView()"></ng-include>
+        <!-- обратите внимание: здесь переключение между путями ко view происходит динамически с помощью обращения к методу-->
+    </div>
+</body>
+</html>

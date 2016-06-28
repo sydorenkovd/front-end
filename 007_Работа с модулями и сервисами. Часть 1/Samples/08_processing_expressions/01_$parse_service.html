@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<!--сервис $parse позволяет превращать angularjs выражения в функции которые могут обрабатывать данные-->
+<html ng-app="studyModule">
+<head>
+    <title></title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.price = "100.23";
+            $scope.data = [2,1,4,51];
+        })
+        .directive("evalExpression", function ($parse) {
+            return function (scope, element, attrs) {
+                scope.$watch(attrs["evalExpression"], function (newValue) {
+                    try {
+                        var expressionFn = $parse(scope.expr);
+                        //с помощью сервиса $parse получаем значение свойства expr и превращаем его в функцию
+                        var result = expressionFn(scope);
+                        //далее применяем эту функцию для scope
+                        if (result == undefined) {
+                            result = "No result";
+                        }
+                    } catch (err) {
+                        result = "Cannot evaluate expression";
+                    }
+                    element.text(result);
+                });
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="well">
+        <p><input class="form-control" ng-model="expr" /></p>
+        <div>
+            Result: <span eval-expression="expr"></span>
+        </div>
+    </div>
+</body>
+</html>

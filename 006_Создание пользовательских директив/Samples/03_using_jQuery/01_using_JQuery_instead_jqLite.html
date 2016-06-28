@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Custom Directives</title>   
+    <script src="../jquery-2.1.1.min.js"></script>
+    <!--обратите внимание здесь скрипт jquery подключен раньше чем скрипт angular/ Angular проверяет подключен ли в документе jquery и если нет то использует jqLite.-->
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .directive("orderedList", function () {
+                return function (scope, element, attributes) {
+                    var data = scope[attributes["orderedList"]];
+                    var expression = attributes["customProperty"];
+                    if (angular.isArray(data)) {
+                        var elem = angular.element("<ul>").appendTo(element);
+                        element.append(elem);
+                        for (var i = 0; i < data.length; i++) {
+                            (function () {
+                                var itemElem = angular.element('<li>').appendTo(elem);
+                                elem.append(itemElem);
+                                var index = i;
+                                var watcherFunction = function (watchScope) {
+                                    return watchScope.$eval(expression, data[index]);
+                                }
+                                scope.$watch(watcherFunction, function (newValue, oldValue) {
+                                    itemElem.text(newValue);
+                                });
+                            }());
+                        }
+                    }
+                }
+            })
+        .controller("studyCtrl", function ($scope) {
+            $scope.items = [
+                { itemName: "Table", itemPrice: 44.10 },
+                { itemName: "Chair", itemPrice: 21.20 },
+                { itemName: "Pillow", itemPrice: 12.20 },
+                { itemName: "Picture", itemPrice: 112.70 },
+                { itemName: "Lamp", itemPrice: 28.31 }
+            ];
+            $scope.changePrices = function () {
+                for (var i = 0; i < $scope.items.length; i++) {
+                    $scope.items[i].itemPrice++;
+                }
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Items</h3>
+        </div>
+        <div class="panel-body">
+            <button class="btn btn-success" ng-click="changePrices()">
+                <h4>Change Prices</h4>
+            </button>
+        </div>
+        <div class="panel-body h3">
+            <div ordered-list="items" custom-property="itemPrice | currency"></div>
+        </div>
+    </div>
+</body>
+</html>

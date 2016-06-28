@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Filters Chain</title>
+    <script src="../../angular.js"></script>
+    <link href="../../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .controller("studyCtrl", function ($scope) {
+                $scope.items = [
+                    { itemName: "milk", itemCategory: "Dairy", itemPrice: 1.40, expireDate: 1 },
+                    { itemName: "cheese", itemCategory: "Dairy", itemPrice: 2.40, expireDate: 2 },
+                    { itemName: "water", itemCategory: "Drinks", itemPrice: 1.20, expireDate: 366 },
+                    { itemName: "juice", itemCategory: "Drinks", itemPrice: 3.30, expireDate: 60 },
+                    { itemName: "potato", itemCategory: "Vegetable", itemPrice: 5.90, expireDate: 14 },
+                    { itemName: "tomato", itemCategory: "Vegetable", itemPrice: 6.88, expireDate: 9 }
+                ];
+
+                $scope.customSorter = function (value) {
+                    return value.expireDate < 5 ? 0 : value.itemPrice;
+                };
+            });
+    </script>
+    <script src="customFilters.js"></script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>
+                Items in cart
+                <span class="label label-info">{{items.length}}</span>
+            </h3>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" ng-repeat="item in items |change:3:4">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4>{{item.itemName | changeCase}}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p><span class="h4">Category: </span>{{item.itemCategory | changeCase:true}}</p>
+                        <p><span class="h4">Expire date: </span>{{item.expireDate}}</p>
+                        <p class="text-right"><span class="h4">Price: </span>{{item.itemPrice | currency}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

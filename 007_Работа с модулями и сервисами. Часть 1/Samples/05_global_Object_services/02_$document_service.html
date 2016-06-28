@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>DOM API Services</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+    angular.module("studyModule", [])
+    .controller("studyCtrl", function ($scope, $window, $document) {
+        $document.find("button").on("click", function (event) {
+            $window.alert(event.target.innerText);
+        })
+    });
+    </script>
+</head>
+<body ng-controller="studyCtrl" class="well">
+    <button class="btn btn-primary">Click me!</button>
+</body>
+</html>

@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title></title>
+    <script src="../../angular.min%20.js"></script>
+    <link href="../../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../../bootstrap.css" rel="stylesheet" />
+    <script src="products.js"></script>
+</head>
+<body ng-controller="studyCtrl">
+    <div>
+        <ng-include src="'loginPage.html'" ng-show="displayPage == 'loginPage'"></ng-include>
+        <ng-include src="'createAccountPage.html'" ng-show="displayPage == 'createAccountPage'"></ng-include>
+        <ng-include src="'privatePage.html'" ng-show="displayPage == 'privatePage'"></ng-include>
+    </div>
+</body>
+</html>

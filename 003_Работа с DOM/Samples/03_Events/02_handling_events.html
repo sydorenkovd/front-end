@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Handling events</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: false },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: false },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: true },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: false }
+            ];
+            $scope.buttonNames = ["Red", "Green", "Blue"];
+            $scope.data = {
+                rowColor: "Blue",
+                columnColor: "Green"
+            };
+            $scope.handleEvent = function (e) {
+                console.log("Event type:" + e.type);
+                $scope.data.columnColor = e.type == "mouseover" ? "Green" : "Blue";
+            };
+        });
+    </script>
+    <style>
+        .Red {
+            background-color: lightcoral;
+        }
+
+        .Green {
+            background-color: lightgreen;
+        }
+
+        .Blue {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <div class="row well">
+            <span ng-repeat="button in buttonNames">
+                <button class="btn btn-info" ng-click="data.rowColor = button">
+                    <!--ng-click используется для обработки собтия нажатия на сгенерированной кнопке, устанавливая значение стиля равное названию кнопки--> 
+                    {{button}}
+                </button>
+            </span>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tasks</th>
+                    <th>Done</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="task in tasks" ng-class="data.rowColor" ng-mouseenter="handleEvent($event)" ng-mouseleave="handleEvent($event)">
+                <td>{{$index + 1}}</td>
+                <td>{{task.action}}</td>
+                <td ng-class="data.columnColor">{{task.complete}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

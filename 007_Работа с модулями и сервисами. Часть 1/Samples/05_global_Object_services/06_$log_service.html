@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<!--$anchorScroll сервис выполняет прокрутку документа до того элемента id которого возвращается $location.hash() методом-->
+<html ng-app="studyModule">
+<head>
+    <title>DOM API Service</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope, $log) {
+            $scope.log = function () {
+                $log.log("Log message");
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl" class="well">
+<button class="btn btn-primary" ng-click="log()">LOG!</button>
+</body>
+</html>

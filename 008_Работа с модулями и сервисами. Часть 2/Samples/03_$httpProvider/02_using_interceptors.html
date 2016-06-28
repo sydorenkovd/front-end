@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--interceptor(перехватчик) это некий асоциативный массив который содержит в себе функции предназначенные для перехвата запросов или ответов
+свойства которые содержит interceptor:
+    request функция будет выполнена перед запросом на сервер, в аргументах функции приходит объект config который содержит ранее упомянутые свойства
+    requestError функция будет вызвана если предыдущая функция перехватчик запроса сгенерировала ошибку
+    response функция будет выполнена когда будет получен ответ от сервера, в аргументы функции попадает объект который содержит ответ от сервера
+    responseError функция будет вызвана если предыдущая функция перехватчик ответа сгенерировала ошибку-->
+<head>    
+    <title></title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .config(function ($httpProvider) {
+            $httpProvider.interceptors.push(function () {
+                return {
+                    request: function (config) {
+                        config.url = "../data.json";
+                        return config;
+                    },
+                    response: function (response) {
+                        console.log("Fruits Count :" + response.data.length);
+                        return response;
+                    }
+                }
+            });
+        })
+        .controller("studyCtrl", function ($scope, $http) {
+            $scope.getFruits = function () {
+                $http.get("NotExists.xml").success(function (responseData) {
+                    $scope.fruits = responseData;
+                });
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div id="tasksPanel" class="panel panel-primary" ng-controller="studyCtrl">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <button class="btn btn-success" ng-click="getFruits()">
+                    <h2>Get Fruits!</h2>
+                </button>
+            </div>
+        </div>
+        <div id="panel" class="panel-body">
+            <div class="row">
+                <div ng-hide="fruits.length">
+                    <h3 class="text-center">No Data</h3>
+                </div>
+                <div class="col-sm-4 col-md-4" ng-repeat="fruit in fruits">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title text-center">
+                                <h3>{{fruit.name}}</h3>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <h3>Cost : {{fruit.price | currency}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--контроллер - монолит это один контроллер который применяется ко всей разметке на странице-->
+    <title>Monolithic Controller</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.logins = [];
+            $scope.setLogin = function (key, value) {                
+                $scope.logins[key] = value;
+            };
+            $scope.copyLogin = function () {
+                $scope.password = $scope.login;
+            };
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading text-center">
+            <h3>Monolithic Controller</h3>
+        </div>
+        <div class="panel-body">
+            <div class="well-sm">
+                <h4>Login</h4>
+                <div class="form-group">
+                    <input class="form-control" ng-model="login" />
+                </div>
+                <button class="btn btn-primary" ng-click="setLogin('login', login)">
+                    Save login
+                </button>
+                <h4>Password</h4>
+                <div class="form-group">
+                    <input class="form-control" ng-model="password" />
+                </div>
+                <button class="btn btn-primary" ng-click="copyLogin()">
+                    Use login
+                </button>
+                <button class="btn btn-primary" ng-click="setLogin('password', password)">
+                    Save Password
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

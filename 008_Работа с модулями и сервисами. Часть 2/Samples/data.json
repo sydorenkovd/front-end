@@ -1,0 +1,10 @@
+﻿[
+    { "name": "Orange", "price": 1.20 },
+    { "name": "Apple", "price": 2.42 },
+    { "name": "Melon", "price": 2.02 },
+    { "name": "Pear", "price": 20.45 },
+    { "name": "Watermelon", "price": 17.93 },
+    { "name": "Coco", "price": 14.01 },
+    { "name": "Banana", "price": 11.34 },
+    { "name": "Tangerine", "price": 12.93 }
+]

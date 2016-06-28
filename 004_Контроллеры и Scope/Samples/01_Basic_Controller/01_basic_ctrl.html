@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Basic Controller</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) { });
+        //чтобы создать контроллер нужно вызвать метод controller и передать ему 2 аргумента:
+        //1й название контроллера, 2й это функция конструктор или фабричная функция (так как эта функция используется для создания других функций - фабрика)
+        //фабричная функция принимает аргумент $scope который передается ей с помощью Dependency Injection,
+        //но так же можно в аргументах указывать и другие сервисы например $http
+    </script>
+</head>
+<body>
+    <div class="btn btn-primary btn-lg" ng-controller="studyCtrl">
+        <!--для того чтобы использовать методы контроллера в определенном участке разметки,
+        нужно обязательно указать директиву ng-controller с имененм того контроллера который будет использоватся в разметке,
+        для одной html страницы может использоватся множество контроллеров
+        так же при именовании контроллера сделует использовать приставку Ctrl-->
+        Content
+    </div>
+</body>
+</html>

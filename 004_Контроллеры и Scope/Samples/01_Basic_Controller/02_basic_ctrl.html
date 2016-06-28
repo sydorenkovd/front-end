@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>Basic Controller</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.fruit = "Apple";
+            $scope.getFruit = function (fruit) {
+                switch (fruit) {
+                    case "Apple":
+                        return "Yes!";
+                    case "Banana":
+                        return "Nope!";
+                };
+            };
+            //преимущественно $scope в контроллере исполузуется для 2ух целей:
+            //1)передать данные во view 
+            //2) определить функции которые могут быть вызваны из view
+        });
+    </script>
+</head>
+<body>
+    <div class="panel panel-primary" ng-controller="studyCtrl">
+        <div class="panel-heading">
+            <h4>The fruit is: {{fruit}}</h4>
+            <h4>Do you wan't it ? : {{getFruit(fruit)}}</h4>
+        </div>
+    </div>
+</body>
+</html>

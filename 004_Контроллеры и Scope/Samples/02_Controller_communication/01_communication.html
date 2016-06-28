@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--раздельные scope иногда это очень неудобно, но к щастью в angular есть механизм который позволяет scope общатся между собой
+    все scope организованы в иерархию которая начинается с $rootScope и каждый scope является дочерним элементом rootScope
+    rootScope позволяет распространять event между scope что позволяет им взаимодействовать между собой-->
+    <!--Методы для посылки и получения events:
+    $broadcast(name, args) отсылает event из текущего scope всем дочерним, 1й аргумент - имя события, 2й - объект предоставляющий дополнительные данные
+    $emit(name, args) отсылает event от текущего scope  к rootScope
+    $on(name, handler) регистрирует обработчик который будет вызван когда scope инициирует необходимый event,
+    аргументы: 1й - название события для которого сработает обработчик 2й - функция обработчик-->
+    <title>Controller communication</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope, $rootScope) {
+            $scope.$on("zipCodeUpdated", function (event, args) {
+                $scope[args.type] = args.zipCode;
+            });
+            //данная функция является обработчиком на событие zipCodeUpdated в event содержатся данные которые были переданы вместе с инициацией события
+            //это type и zip далее в теле функции происходит присвоение текущему scope значений из scope инициатора события
+            //$scope[args.type] = args.zipCode; выражение эквивалентно $scope.billingZip = billingZip
+            $scope.setAddress = function (type, zip) {
+                $rootScope.$broadcast("zipCodeUpdated", {
+                    type: type, zipCode: zip
+                });
+                //данная функция после получения данных генерирует событие zipCodeUpdated которое содержит дополнительные данные
+                console.log("Type: " + type + " " + zip);
+            };
+            $scope.copyAddress = function () {
+                if($scope.billingZip) {
+                    $scope.shippingZip = $scope.billingZip;
+                }
+                if($scope.shippingZip){
+                    $scope.billingZip = $scope.shippingZip;
+                }
+            };
+        });
+    </script>
+</head>
+<body class="row">
+    <div class="col-xs-6">
+        <div class="panel panel-success" ng-controller="studyCtrl">
+            <div class="panel-heading">
+                <h3>Billing Zip Code</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input class="form-control" ng-model="billingZip" />
+                </div>
+                <button class="btn btn-success" ng-click="copyAddress()">
+                    Use Shipping
+                </button>
+                <button class="btn btn-success" ng-click="setAddress('billingZip', billingZip)">
+                    Save billing
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="panel panel-success" ng-controller="studyCtrl">
+            <div class="panel-heading"><h3>Shipping zip code</h3></div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input class="form-control" ng-model="shippingZip" />
+                </div>
+                <button class="btn btn-success" ng-click="copyAddress()">
+                    Use Billing
+                </button>
+                <button class="btn btn-success" ng-click="setAddress('shippingZip', shippingZip)">
+                    Save Shipping
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

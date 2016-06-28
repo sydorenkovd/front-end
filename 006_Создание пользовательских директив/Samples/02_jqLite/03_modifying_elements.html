@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--еще одна причина почему для навигации по DOM следует использовать директивы это возможность изменять HTML элементы
+jqLite предоставляет ряд методов для изменения элементов и их содержимого
+    addClass(name) добавляет все элементы из jqLite объекта в класс
+    attr(name)/attr(name, value) возвращает значение для атрибута первого элемента из jqLite объекта или устанавливает значение для всех элементов
+    css(name)/css(name, value)  возвращает значение css свойства первого элемента из jqLite объекта или устанавливает значение css свойства для всех элементов
+    hasClass(name) возвращает true если любой из жлементов jqLite объекта принадлежит к указанному классу
+    prop(name)/prop(name, value) возвращает значение свойства первого элемента из jqLite объекта или устанавливает значение свойства для всех элементов
+    removeAttr(name) удаляет атрибут из всех элементов jqLite объекта
+    removeClass(name) удаляет элементы jqLite объекта из определенного css класса
+    text()/text(value)  возвращает сконкатенированный текст всех элементов jqLite объекта
+        или устанавливает значение для всех элементов jqLite объекта
+    toggleClass(name) выполняет инверсию css класса для элементов jqLite объекта. Те элементы который были включены в класс - удаляются, а те которые не были включены - добавляются.
+    val()/val(value) возвращает атрибут value для первого элемента из jqLite объекта или устанавливает атрибут value для всех элементов jqLite объекта.-->
+<head>
+    <title>jqLite</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .directive("customDirective", function () {
+            return function (scope, element, attributes) {
+                var elements = element.find("li");
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements.eq(i).text() == "Red") {
+                        elements.eq(i).addClass("target");
+                    } else {
+                        elements.eq(i).addClass("missing");
+                    }
+                }                
+            }
+        });
+    </script>
+    <style>
+        .target {
+            color:lawngreen;
+        }
+        .missing {
+            color:red
+        }
+    </style>
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Colors</h3>
+        </div>
+        <div class="panel-body h3">
+            <ul custom-directive>
+                <li>Red</li>
+                <li>Black</li>
+                <ul>
+                    <li>Red</li>
+                    <li>Coral</li>
+                </ul>
+                <li>Yellow</li>
+                <li>Navy</li>
+                <li>Green</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

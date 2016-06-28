@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--Создавать пользовательские директивы следжует в том случае если встроенные директивы не предоставляют вам
+    нужной функциональности, вы хотите создать более обобщенную директиву или же наоборот более узко-специализированную.-->
+    <title>Custom Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .directive("orderedList", function () {
+                //для создания директивы следует использовать метод directive который принимает 2 аргумента: 1) имя директивы; 2) фабричная функция
+                return function (scope, element, attributes) {
+                    //такая worker функция называется ссылочной функцией - это означает что она связывает директиву в разметке с данными из scope
+                    //эта функция будет вызванан когда angularjs создает экземпляры директивы и передает туда 3 аргумента:
+                    //1)scope для view к которому применена директива; 2) HTML элемент к которому будет применена директива;
+                    //3) атрибуты HTML элемента к которому применена директива
+                    //эти аргументы не предоставляются Dependency Injection это стандартные аргументы JavaScript поэтому их порядок важен
+                    var data = scope[attributes["orderedList"]];
+                    //благодаря attributes можно получить атрибуты из разметки, далее атрибут передается в scope для получения его значения
+                    if (angular.isArray(data)) {
+                        var elem = angular.element("<ol>");
+                        //метод element который является оберткой над функционалом jqlite(фактически возвращает jqLite объект с помощью которого можно получить домступ к другим методам jqLite)
+                        //здесь c его помощью мы создаем элемент ul
+                        element.append(elem);
+                        //так как атрибут element представляет HTML элемент к которому применена директива
+                        //то на нем доступен метод append который позволяет вставить новый элемент разметки
+                        for (var i = 0; i < data.length; i++) {
+                            elem.append(angular.element('<li>').text(data[i].itemName));
+                        }
+                    }
+                }
+            })
+        .controller("studyCtrl", function ($scope) {
+            $scope.items = [
+                { itemName: "Table", itemPrice: 44.10 },
+                { itemName: "Chair", itemPrice: 21.20 },
+                { itemName: "Pillow", itemPrice: 12.20 },
+                { itemName: "Picture", itemPrice: 112.70 },
+                { itemName: "Lamp", itemPrice: 28.31 }
+            ];
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Items</h3>
+        </div>
+        <div class="panel-body h3">
+            <div ordered-list="items"></div>
+            <!--angularjs обрабатывает каждую букву в верхнем регистре как знак раздлеления - поэтому имеет смысл применять немного измененное имя директивы-->
+        </div>
+    </div>
+</body>
+</html>

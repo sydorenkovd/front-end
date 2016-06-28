@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--Как вы уже видели все типы запросов которые можно выполнить с помощью сервиса $http поддерживают в качестве второго параметра конфигурационный объект,
+с помощью которого можно передать дополнительные данные в запросе:
+    data содержит данные которые будут переданы в запросе, если в качестве значения указать объект, то AngularJS автоматически сериализует его в JSON
+    headers используется для передачи заголовков в запросе
+    method устанавливает тип запроса
+    params позволяет передать URL параметры
+    timeout устанавливает время ожидания ответа от сервера
+    transformRequest используется для работы с запросом перед его посылкой на сервер
+    transformResponse используется для манипуляции с ответом после того как он пришел от сервера
+    url устанавливает URL для запроса
+    withCredentials если в качестве параметра указать true то в запрос будут включены cookies для аутентификации
+    xsrfHeaderNamexsrfCookieName это свойство используется для ответа на кроссдоменные зарпосы-->
+
+<head>
+    <title>Ajax</title>    
+    <script src="../angular.js"></script>    
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope, $http) {
+            $scope.getFruits = function () {
+                var config = {
+                    transformResponse: function (responseData, headers) {
+                        fruits = [];
+                        var elem = angular.element(responseData.trim()).find("fruit");
+                        for (var i = 0; i < elem.length; i++) {
+                            var fruit = elem.eq(i);
+                            fruits.push({
+                                name: fruit.attr("name"),                                
+                                price: fruit.attr("price")
+                            });
+                        }
+                        return fruits;                        
+                    }
+                }
+                $http.get("../xmlData.xml", config).success(function (responseData) {
+                    $scope.fruits = responseData;
+                });
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div id="tasksPanel" class="panel panel-primary" ng-controller="studyCtrl">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <button class="btn btn-success" ng-click="getFruits()">
+                    <h2>Get Fruits!</h2>
+                </button>
+            </div>
+        </div>
+        <div id="panel" class="panel-body">
+            <div class="row">
+                <div ng-hide="fruits.length">
+                    <h3 class="text-center">No Data</h3>
+                </div>
+                <div class="col-sm-4 col-md-4" ng-repeat="fruit in fruits">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title text-center">
+                                <h3>{{fruit.name}}</h3>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <h3>Cost : {{fruit.price | currency}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

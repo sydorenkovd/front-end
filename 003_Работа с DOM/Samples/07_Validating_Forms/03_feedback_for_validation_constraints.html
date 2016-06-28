@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--для визуального указания пользователю на места где он совершил ошибки в angular существует ряд css классов:
+         ng-pristine в этот класс добавляются все элементы с которыми пользователь еще не взаимодействовал
+         ng-dirty в этот класс добавляются все элементы с которыми пользователь взаимодействовал
+         ng-valid класс для валидных элементов
+         ng-invalid класс для невалидных элементов-->
+    <title>Forms</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .controller("studyCtrl", function ($scope) {
+                $scope.addNewUser = function (userDetails) {
+                    $scope.message = userDetails.name
+                        + " (" + userDetails.email + ") (" + userDetails.agreed + ")";
+                }
+
+                $scope.message = "Ready";
+            });
+    </script>
+    <style>
+        /*angular так же позволяет применять стили в зависимости от того какое ограничение на валидность срабатывает
+        ниже приведено 2 стиля: 1й срабатывает если мы сделали поле dirty 2й когда email не прошел валидность*/
+        form .ng-invalid-required.ng-dirty {
+            background-color: lightpink;
+        }
+        form .ng-invalid-email.ng-dirty {
+            background-color: lightgoldenrodyellow;
+        }
+        form .ng-valid.ng-dirty {
+            background-color: lightgreen;
+        }
+        /*первые два стиля применяются к элементам в которые пользователь внес изменения,
+        валидация производится angular после каждого действия пользователя (после каждого введенного символа)*/
+        span.summary.ng-invalid {
+            color: red;
+            font-weight: bold;
+        }
+
+        span.summary.ng-valid {
+            color: green;
+        }
+        /*эти два стиля применяются к блоку summary в зависимости от того валидны ли данные в форме или нет*/
+    </style>
+</head>
+<body>
+    <div id="todoPanel" class="panel col-xs-3" ng-controller="studyCtrl">
+        <form name="myForm" novalidate ng-submit="addNewUser(newUser)">
+            <!--атрибут name нужно указывать, так как далее он будет использоваться angular при проверке формы на валидность, это так же касается элементов формы
+            так же здесь указан атрибут novalidate для того чтобы браузеры не пытались сами валидировать данные и предоставили это angular-->
+            <div class="well">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <!--так же в примере для проверки валидности используются стандартные возможности HTML: атрибуты и встроенная валидация по type
+                    например required указывает на обязательность значения, а type="email" будет проверять на валидность данные с помощью регулярного выражения-->
+                    <input name="userName" type="text" class="form-control" required ng-model="newUser.name">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input name="userEmail" type="email" class="form-control" required ng-model="newUser.email">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input name="agreed" type="checkbox" ng-model="newUser.agreed" required>
+                        I agree to the terms and conditions
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" ng-disabled="myForm.$invalid">
+                    <!--здесь используется директива ng-disabled для того чтобы задавать состояние кнопки в случае не валидности данных в форме
+                    обратите внимание что переменную $invalid получаем на myForm, вот почему так важно задавать атрибут name как для форм так и для элементов формы-->
+                    OK
+                </button>
+            </div>
+            <div class="well">
+                Message: {{message}}
+                <div>
+                    Valid:
+                    <span class="summary" ng-class="myForm.$valid ? 'ng-valid' : 'ng-invalid'">
+                        <!--так же можно используя переменные валидации angular самостоятельно применять те или инные стили при соблюдении валидности\невалидности-->
+                        {{myForm.$valid}}
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

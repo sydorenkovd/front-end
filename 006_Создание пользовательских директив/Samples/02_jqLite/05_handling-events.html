@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--jqLite предоставляет ряд методов для обработки событий
+    on(events, handler) регистрирует обработчик для одного или нескольких событий инициатором которых является елемент который представлен как jqLite объект
+    off(events, handler) удаляет предварительно зарегистрированный обработчик для елемента который представлен как jqLite объект
+    triggerHandler(event) запускает все обработчики для события указанного в аргументах.
+    -->
+<head>
+    <title>jqLite</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <style>
+        .red {
+            color:red;
+        }
+    </style>
+    <script>
+        angular.module("studyModule", [])
+            .directive("customDirective", function () {
+                return function (scope, element, attributes) {
+                    var elem = angular.element("<ul>");
+                    element.append(elem);
+                    for (var i = 0; i < scope.colors.length; i++) {
+                        elem.append(angular.element("<li>").append(angular.element("<span>").text(scope.colors[i])));
+                    }
+                    var button = element.find("button");
+                    button.on("click", function (e) {
+                        element.find("li").toggleClass("red");
+                    });
+                }
+            })
+
+        .controller("studyCtrl", function ($scope) {
+            $scope.colors = ["Red", "Black", "Navy", "Green", "Yellow"];
+        })
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Colors</h3>
+        </div>
+        <div class="panel-body">
+            <div custom-directive class="h4">
+                <button class="btn btn-danger">Change color</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--Для того чтобы использовать AJAX следует всеголишь запросить сервис $http который позволяет работать с AJAX,
+далее следует вызвать один из методов которые предоставляет этот сервис(в зависимости от типа запроса который вы хотите сформировать)
+затем нужно определить метод который будет выполнятся при успешном запросе и который будет выполнятся если запрос не удался (при необходимости).
+Так же для того чтобы вы могли получить доступ к файлу с расширением *json следует внести изменения в файл web.config-->
+<!--Методы сревиса $http
+    get(url, config) выполняет GET запрос по указанному URL, config - конфигурационный объект.
+    post(url, data, config) выполняет POST запрос по указанному URL, data - данные которые передаются в запросе, config - конфигурационный объект.
+    delete(url, config) выполняет DELETE запрос по указанному URL, config - конфигурационный объект.
+    put(url, data, config) выполняет PUT запрос по указанному URL, data - данные которые передаются в запросе, config - конфигурационный объект.
+    head(url, config) выполняет HEAD запрос по указанному URL, config - конфигурационный объект.
+    jsonp(url, config) выполняет GET запрос для получения в качестве ответа JavaScript сценария который затем будет выполнен(работа с кроссдоменными запросами JSONP)-->
+<!--AngularJS использует технологию promise, суть этой технологии заключается в том что при выполнении асинхронного запроса после его окончания
+будет выполнен метод который указан в цепочке. Например метод success является promise так как AJAX запрос асинхронный, и этот метод будет выполнен
+после того как запрос получит ответ от сервера.Ниже представлен список методов доступных для манипулирования данными полученными в качестве ответа на запрос от сервера-->
+<!--success(fn) вызывает функцию которая определена в аргументах когда запрос выполнен успешно
+error(fn) вызывает функцию которая определена в аргументах когда запрос выполнен с ошибкой
+then(fn, fn) регистрирует функцию success и функцию error-->
+<head>
+    <title></title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope, $http) {
+            //$http сервис позволяет работать с ajax
+            $scope.getFruits = function () {
+                $http.get("../data.json").success(function (responseData) {
+                    //вызвав метод get сервиса выполняем GET запрос
+                    $scope.fruits = responseData;
+                    //полученные данные записываем в свойство products на $scope, далее AngularJS самостоятельно обновит все привязки
+                })
+            }
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div id="tasksPanel" class="panel panel-primary" ng-controller="studyCtrl">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <button class="btn btn-success" ng-click="getFruits()">
+                    <h2>Get Fruits!</h2>
+                </button>
+            </div>
+        </div>       
+        <div id="panel" class="panel-body">
+            <div class="row">
+                <div class="col-sm-4 col-md-4" ng-repeat="fruit in fruits">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title text-center">
+                                <h3>{{fruit.name}}</h3>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <h3>Cost : {{fruit.price | currency}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+    <!--в предыдущих примерах для создания директивы использовалась фабричная функция которая возвращала ссылочную функцию
+    это простейший подход, который скрывает большинство дополнительных опций которые можно указать при создании директивы.
+    Для того чтобы указать эти опции следует использовать инной подход: фабричная функция долждна возвращать JavaScript объект, 
+    который содержит в себе свойства для указания полноценной кастомизации директивы. Перечень свойств представлен ниже:
+        compile определяет функцию компиляции
+        controller создает функцию-контроллер для директории
+        link определяет ссылочную функцию для директивы
+        replace определяет замещать ли содержимое элемента к которому была примененна директива сгенерированным контентом 
+        require объявляет зависимость от контроллера
+        restrict определяет как директива может быть применена
+        scope создает новый scope или isolated scope для директивы
+        template определяет шаблон который будет вставлен в HTML разметку
+        templateUrl определяет шаблон извне который будет вставлен в HTML разметку
+        transclude определяет может ли директива использоватся в качестве обертки для произвольного содержимого-->
+<head>
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .directive("orderedList", function () {
+                return {
+                    link: function (scope, element, attributes) {
+                        var data = scope[attributes["orderedList"]] || attributes["listSource"];
+                        var expression = attributes["property"] || "price" | "currency";
+                        if (angular.isArray(data)) {
+                            var elem = angular.element("<ol>");
+                            if (element[0].nodeName == "#comment") {
+                                element.parent().append(elem);
+                            } else {
+                                element.append(elem);
+                            }
+                            for (var i = 0; i < data.length; i++) {
+                                var itemElement = angular.element("<li>").text(scope.$eval(expression, data[i]));
+                                elem.append(itemElement);
+                            }
+                        }
+                    },
+                    restrict: "EACM" 
+                    //свойство restrict указывает как можно применить директиву, существует несколько аргументов которые нужно указывать:
+                    //E позволяет применить директиву как элемент
+                    //A позволяет применить директиву как атрибут
+                    //C позволяет применить директиву как класс
+                    //M позволяет применить директиву как комментарий
+                }
+            })
+        .controller("studyCtrl", function ($scope) {
+            $scope.items = [
+                { itemName: "Table", itemPrice: 44.10 },
+                { itemName: "Chair", itemPrice: 21.20 },
+                { itemName: "Pillow", itemPrice: 12.20 },
+                { itemName: "Picture", itemPrice: 112.70 },
+                { itemName: "Lamp", itemPrice: 28.31 }
+            ];
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Items</h3>
+        </div>
+        <div class="panel-body h4">
+            <div ordered-list="items" property="itemPrice | currency"></div>
+        </div>
+    </div>
+</body>
+</html>

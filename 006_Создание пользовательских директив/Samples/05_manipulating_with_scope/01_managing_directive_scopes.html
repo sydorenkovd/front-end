@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--в данном примере в шаблоне применяется ng-model но так как в контроллере такого свойства нет оно будет создано автоматически
+    когда в один из input будут введены данные, так как здесь директива применяется в двух местах то будут созданы 2 экземпляра данной директивы
+    но оба эти экземпляра находятся в контроллере studyCtrl соответственно в обеих input будет two-way binding на свойство data--> 
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .directive("scopeExample", function () {
+            return {
+                template: "<div class='panel-body'>Type something: <input ng-model=data /></div>"
+            }
+        })
+        .controller("studyCtrl", function ($scope) {
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="studyCtrl" class="panel panel-primary">
+        <div class="panel-body" scope-example></div>
+        <div class="panel-body" scope-example></div>
+    </div>
+</body>
+</html>

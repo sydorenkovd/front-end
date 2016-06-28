@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--использования isolated scope имеет как ряд преимуществ так и ряд недостатков, например вам будет очень сложно манипулировать данными,
+для упрощения в angularjs предусмотрен механизм с помощью которого можно взаимодействовать между контроллером и isolated scope
+isolated scope позволяет вам создать привязку к данным в scope контроллера используя атрибут который применяется к тому элементу к 
+которому применена директива-->
+<head>    
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script type="text/ng-template" id="customTemplate">
+        <div class="panel panel-success">            
+            <div class="panel-heading"><p>This is {{property}}</p></div>
+            <!--1) определяем binding на свойство isolated scope-->
+        </div>
+    </script>
+    <script>
+        angular.module("studyModule", [])
+        .directive("scopeExample", function () {
+            return {
+                template: function () {
+                    return angular.element(document.querySelector("#customTemplate")).html();
+                },
+                scope: {
+                    property: "@color"
+                    //2) с помощью @ указываем one-way binding на атрибут name
+                    //one-way binding в isolated scope применим только к строкам,
+                    //если вы хотите создать binding к типу отличному от строки следует использовать two-way binding
+                }
+            }
+        })
+        .controller("studyCtrl", function ($scope) {
+            $scope.data = { color: "Green" };
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="studyCtrl" class="panel panel-warning">
+        <div class="panel-heading">
+            Binding source: <input ng-model="data.color" />
+        </div>                
+        <div class="panel-body" scope-example color="{{data.color + ' color'}}"></div>
+        <!--3) в качестве значения для атрибута color используется значение свойства name--> 
+    </div>
+</body>
+</html>

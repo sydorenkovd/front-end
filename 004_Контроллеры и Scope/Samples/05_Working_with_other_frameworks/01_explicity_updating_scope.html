@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<!--для взаимодействия с другимим фреймворками в AngularJS предусмотрены несколько методов которые позволяют
+добавлять данные  в scope из других фреймворков а так же создавать функции обработчики для ответа на изменения в scope-->
+<!--$apply(expression) применяет изменения к scope
+$watch(expression, handler) регистрирует обрабочик который будет срабатывать при изменении выражения expression
+$watchCollection(object, handler) регистрирует обработчик который будет реагировать когда хоть какое-то свойство из коллекции свойств изменится-->
+<html ng-app="studyModule">
+<head>
+    <title>Working with other frameworks</title>
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <script src="../angular.min%20.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.css" />
+    <script>
+        $(document).ready(function () {
+            $('#jQueryUI button').button().click(function (e) {
+                angular.element(angularRegion).scope().$apply('clickHandler()');
+                //angular.element является оберткой для представления HTML элемента как элемента JQuery,
+                //в этот метод передается id элемента div, метод возвращает объект на котором можно вызвать метод scope()
+                //который в свою очередь вернет интересующий scope
+                //далее используя метод $apply вызывается функция из контроллера angular
+            });
+        });
+
+        var app = angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.buttonEnabled = true;
+            $scope.clickCounter = 0;
+            $scope.clickHandler = function () {
+                $scope.clickCounter++;
+            }
+            $scope.$watch('buttonEnabled', function (newValue) {
+                $('#jQueryUI button').button({
+                    disabled: !newValue
+                });
+            });
+            //$watch метод регистрирует функию которая будет вызвана когда значение в scope изменится
+        });
+    </script>
+</head>
+<body class="row text-center">
+    <div class="col-xs-6">
+        <div id="angularRegion" class="panel panel-success" ng-controller="studyCtrl">
+            <div class="panel-heading"><h4>AngularJS</h4></div>
+            <div class="panel-body">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="buttonEnabled" />
+                        Enable button
+                    </label>
+                </div>
+                Click counter: {{clickCounter}}
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div id="jQueryUI" class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>jQuery UI</h4>
+            </div>
+            <div class="panel-body">
+                <button class="btn btn-primary">
+                    <h4>Click me!</h4>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

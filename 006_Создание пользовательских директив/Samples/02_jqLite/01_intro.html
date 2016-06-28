@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--jqLite является урезанной версией JQuery которую содержит AngularJS и которая используется для
+ создания, манипулирования и управления элементами HTML разметки
+jqLite методы для навигации по DOM
+    children() возвращает jqLite объект который содержит набор дочерних элементов
+    eq(index) возвращает jqLite объект который содержит элемент по определенному индексу из коллекции элементов
+    find(tag) находит все элементы с указанным имененем тега
+    next() возвращает следующий элемент (который находится на том же уровне что и тот для которого вызывается метод)
+    parent() возвращает родительский элемент-->
+<head>
+    <title>jqLite</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .directive("customDirective", function () {
+            return function (scope, element, attributes) {
+                //element - это jqLite объект на котором доступны все выше описанные функции,
+                //этот объект представляет элемент к которому была применена директива
+                var elements = element.find("li");
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements.eq(i).text() == "Red") {
+                        elements.eq(i).css("color", "red");
+                    } if ( elements.eq(i).text() == 'Yellow'){
+                        elements.eq(i).css("color", 'yellow');
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3>Colors</h3>
+        </div>
+        <div class="panel-body h3">
+            <ul custom-directive>
+                <li>Red</li>
+                <li>Black</li>
+                <li>Yellow</li>
+                <li>Navy</li>
+                <li>Green</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

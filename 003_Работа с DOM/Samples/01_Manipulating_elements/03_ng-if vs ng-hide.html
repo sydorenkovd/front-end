@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>ng-if vs ng-hide</title>
+    <!--директивы ng-show, ng-hide и ng-if имеют проблемы когда их применяют для задания стилей таблицам -->
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: false },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: false },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: false },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: false }
+            ];
+        });
+    </script>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <div class="checkbox well">
+            <label>
+                <input type="checkbox" ng-model="tasks[3].complete" />
+                Task 4 is complete
+            </label>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tasks</th>
+                    <th>Done</th>
+                </tr>
+            </thead>
+            <tr style="background-color:beige" ng-repeat="task in tasks" ng-hide="!task.complete">
+                <!--AngularJS обработал директивы и так как элементы спрятаны а не удалены результат направльное применение стиля для виделения строк таблицы-->
+                <td>{{$index + 1}}</td>
+                <td>{{task.action}}</td>
+                <td>{{task.complete}}</td>
+            </tr>
+            <!--<tr style ="background-color:#baf8f8" ng-repeat="task in tasks" ng-if="!task.complete">-->
+                <!--&lt;!&ndash;когда мы используем директиву ng-if то элементы удаляются с DOM, в этом случае стили отображаются корректно&ndash;&gt;-->
+                <!--<td>{{$index + 1}}</td>-->
+                <!--<td>{{task.action}}</td>-->
+                <!--<td>{{task.complete}}</td>-->
+            <!--</tr>-->
+        </table>
+    </div>
+</body>
+</html>

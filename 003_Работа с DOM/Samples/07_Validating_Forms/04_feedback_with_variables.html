@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--для визуального указания пользователь на места где он совершил ошибки в angular существует ряд css классов:
+         ng-pristine в этот класс добавляются все элементы с которыми пользователь еще не взаимодействовал
+         ng-dirty в этот класс добавляются все элементы с которыми пользователь взаимодействовал
+         ng-valid класс для валидных элементов
+         ng-invalid класс для невалидных элементов-->
+    <title>Forms</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .controller("studyCtrl", function ($scope) {
+                $scope.addNewUser = function (userDetails) {
+                    $scope.message = userDetails.name
+                        + " (" + userDetails.email + ") (" + userDetails.agreed + ")";
+                }
+
+                $scope.message = "Ready";
+            });
+    </script>
+    <style>
+        form .ng-invalid-required.ng-dirty {
+            background-color: lightpink;
+        }
+
+        form .ng-invalid-email.ng-dirty {
+            background-color: lightgoldenrodyellow;
+        }
+
+        form .ng-valid.ng-dirty {
+            background-color: lightgreen;
+        }
+        span.summary.ng-invalid {
+            color: red;
+            font-weight: bold;
+        }
+
+        span.summary.ng-valid {
+            color: green;
+        }
+
+        div.error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="todoPanel" class="panel col-xs-3" ng-controller="studyCtrl">
+        <form name="myForm" novalidate ng-submit="addNewUser(newUser)">
+            <div class="well">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input name="userName" type="text" class="form-control" required ng-model="newUser.name">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input name="userEmail" type="email" class="form-control" required ng-model="newUser.email">
+                    <div class="error" ng-show="myForm.userEmail.$invalid && myForm.userEmail.$dirty">
+                        <!--myForm.userEmail.$invalid && myForm.userEmail.$dirty такое условие необходимо потому что если элемент pristine и required
+                        то для него сразу будет отображатся сообщение о невалидности что может сбить с толку пользователя который еще ничего даже и не вводил,
+                        поэтому сообщения применятся только если у элемента присутствует класс dirty-->
+                        <span ng-show="myForm.userEmail.$error.email">
+                            Please enter a valid email address
+                        </span>
+                        <span ng-show="myForm.userEmail.$error.required">
+                            Please enter a value
+                        </span>
+                    </div>
+                    <!--здесь добавлен div  в котором содержатся 2 сообщения в зависимости от типа ошибки валидации
+                с помощью директивы ng-show будет показано сообщение с причиной не валидности введенных данных-->
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input name="agreed" type="checkbox" ng-model="newUser.agreed" required>
+                        I agree to the terms and conditions
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" ng-disabled="myForm.$invalid">
+                    OK
+                </button>
+            </div>
+            <div class="well">
+                Message: {{message}}
+                <div>
+                    Valid:
+                    <span class="summary" ng-class="myForm.$valid ? 'ng-valid' : 'ng-invalid'">
+                        {{myForm.$valid}}
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

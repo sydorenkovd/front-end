@@ -1,0 +1,19 @@
+﻿<div id="panel" class="panel-body">
+    <div class="row">
+        <div class="col-sm-4 col-md-4" ng-repeat="item in products">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-title text-center">
+                        <h3>{{item.name}} : {{item.price | currency}}</h3>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <button class="btn btn-xs btn-primary" ng-click="deleteProduct(item)">Delete</button>
+                    <a href="/edit/{{item.id}}" class="btn btn-xs btn-primary">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" ng-click="listProducts()">Refresh</button>
+    <a href="/create" class="btn btn-primary">New</a>
+</div>

@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--для того чтобы у каждого экземпляра директивы был свой scope конечно же не очень удобно создавать новый контроллер 
+    в angularjs для этого предусмотрено свойство scope и для того чтобы у каждого экземпляра директивы был свой scope достаточно лишь указать scope:true--> 
+    <title>Directives</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script type="text/ng-template" id="customTemplate">
+        <div class="panel panel-success">
+            <div class="panel-heading">{{defaultCaption}}</div>
+            <div class="panel-body">Create caption : <input ng-model="defaultCaption" /></div>
+            <div class="panel-heading">{{data.caption}}</div>
+            <div class="panel-body">Create caption : <input ng-model="data.caption" /></div>
+        </div>
+    </script>
+    <script>
+        angular.module("studyModule", [])
+        .directive("scopeExample", function () {
+            return {
+                template: function () {
+                    return angular.element(document.querySelector("#customTemplate")).html();
+                },
+                scope: true
+            }
+        })        
+        .controller("studyCtrl", function ($scope) {
+            $scope.defaultCaption = "Caption";
+            $scope.data = { caption: "Captiondata" };
+            //TODO измените свойства на объект (уберите комментарий и закоментируйте существующий код) объясните почему теперь пример работает иначе
+        });
+    </script>
+</head>
+<body>
+    <div ng-controller="studyCtrl"  class="panel panel-primary">
+        <div class="panel-body" scope-example></div>
+        <div class="panel-body" scope-example></div>
+    </div>
+</body>
+</html>

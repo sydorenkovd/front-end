@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<!--если вам не нужны возможности которые привносит собой scope или по какой-то другой причине вы не хотите использовать scope то 
+можете без него обойтись используя scopeLess технику-->
+<head>
+    <title>ScopeLess Ctrl</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        var module = angular.module("studyModule", [])
+        .controller("studyCtrl", function () {
+            this.dataValue = "Hello, world!";
+            this.reverseText = function () {
+                this.dataValue = this.dataValue.split("").reverse().join("");
+            };
+        });
+    </script>
+</head>
+<body class="panel panel-primary">
+    <div class="panel-heading" ng-controller="studyCtrl as ctrl">
+        <!--когда используется scopeless контроллер то нужно при объявлении его использовать специфический синтаксис
+        simpleCtrl as ctrl далее к этому контроллеру в разметке можно будет обратится с помощью этой переменной ctrl
+         в данном случае к элементу div применился контроллер simpleCtrl и создалась переменная ctrl-->
+        <h4>ScopeLess Ctrl</h4>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="ctrl.reverseText()">Use mirror</button>
+            </span>
+            <input class="form-control" ng-model="ctrl.dataValue" />
+        </div>
+    </div>
+</body>
+</html>

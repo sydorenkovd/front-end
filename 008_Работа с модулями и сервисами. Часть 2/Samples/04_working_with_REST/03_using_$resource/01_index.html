@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title></title>
+    <script src="../../angular.min%20.js"></script>
+    <script src="../../angular_resource.js"></script>
+    <link href="../../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../../bootstrap.css" rel="stylesheet" />
+    <script src="products.js"></script>
+    <script src="increment.js"></script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="panel panel-primary">
+        <ng-include src="'tableView.html'" ng-show="displayMode == 'list'" ></ng-include>
+        <ng-include src="'editorView.html'" ng-show="displayMode == 'edit'"></ng-include>
+    </div>
+</body>
+</html>

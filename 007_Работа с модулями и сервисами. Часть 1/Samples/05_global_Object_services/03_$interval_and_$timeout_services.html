@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<!--$interval и $timeout сервисы являются обертками над функциями JavaScript windowsetInterval() и window.setTimeout()
+они принимают аргументы:
+    fn функция чье выполнение будет задержано
+    delay количество милисекунд до выполения функции
+    count количество раз когда выполнение функции будет повторятся ($interval), значение по умолчанию 0 и оно означает бесконечное повторение
+    invokeApply когда установлено true(это значение по default) функция будет выполнятся с применением scope.$apply метода-->
+<html ng-app="studyModule">
+<head>
+    <title></title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope, $interval) {
+            $interval(function () {
+                $scope.time = new Date().toTimeString();
+            }, 2000);
+        })
+    </script>
+</head>
+<body ng-controller="studyCtrl" class="well">
+    <div class="panel panel-default">
+        <h4 class="panel-heading">Time</h4>
+        <div class="panel-body">
+            The time is: {{time}}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<!--один из самых распространенных способов атаки на веб приложение это ввод ложных данных, например в поля формы 
+можно ввест не требуемые данные а javascript сценарий который может быть выполнен и впоследствии вашему приложению будт нанесен вред
+angularjs содержит несколько сервисов позволяющих повысить безопасность своего приложения, чаще всего это будет необходимо в 
+приложениях которые позволяют пользователю генерировать html разметку-->
+<html ng-app="studyModule">
+<head>
+    <title></title>
+    <script src="../angular.min%20.js"></script>    
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />    
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.htmlData = "<p>This is <b onmouseover=alert('Attack!')>dangerous</b> data</p>";
+        });
+    </script>
+</head>
+<body ng-controller="studyCtrl">
+    <div class="well">
+        <p><input class="form-control" ng-model="htmlData" /></p>
+        <p>{{htmlData}}</p>
+        <!--запустившись мы увидим строку которая указана в свойстве htmlData но на самом деле angularJS уже обработал ее
+        и отображаемая строка превратилась в &lt;p&gt;This is &lt;b onmouseover=alert('Attack!')&gt;dangerous&lt;/b&gt; data&lt;/p&gt;
+        были заменены опасные символы на более безопасные-->
+    </div>
+</body>
+</html>

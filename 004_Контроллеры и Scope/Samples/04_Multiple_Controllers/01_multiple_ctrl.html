@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <!--каждый раз когда вы применяете директиву ng-controller к элементам на странице, фабричная функция создает экземпляр контроллера
+    таким образом если на странице содержится два div к котором примененна директива
+    то будет создано 2 контроллера и 2 scope которые никак не пересекаются друг с другом-->
+    <title>Multiple Controllers</title>
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.setAddress = function (type, zip) {
+                console.log("Type: " + type + " " + zip);
+            };
+            $scope.copyAddress = function () {
+                $scope.shippingZip = $scope.billingZip;
+            };
+        });
+    </script>
+</head>
+<body class="row">
+    <div class="col-xs-6">
+        <div class="panel panel-success" ng-controller="studyCtrl">
+            <div class="panel-heading">
+                <h3>Billing Zip Code</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input class="form-control" ng-model="billingZip" />
+                </div>
+                <button class="btn btn-success" ng-click="setAddress('billingZip', billingZip)">
+                    Save billing
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="panel panel-success" ng-controller="studyCtrl">
+            <!--обратите внимание здесь директива ng-controller применяется к 2 элементам div
+            что в свою очередь означает что для каждого екземпляра контроллера будет создан свой scope
+            и данные которые будут вводится в поле для ввода первого контроллера не будут доступны второму так как
+            они используют разные scope-->
+            <div class="panel-heading">
+                <h3>Shipping zip code</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input class="form-control" ng-model="shippingZip" />
+                </div>
+                <button class="btn btn-success" ng-click="copyAddress()">
+                    Use Billing
+                </button>
+                <button class="btn btn-success" ng-click="setAddress('shippingZip', shippingZip)">
+                    Save Shipping
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

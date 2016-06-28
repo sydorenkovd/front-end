@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>ng-cloak</title>
+    <!--когда вы работаете со старыми браузерами, медленным интернетом или просто с большими приложениями, то ваш браузер будет отображать разметку как она есть (например привязки angular {{}})
+    в то время пока angular ее компилирует, для того чтобы избежать этого существует два способа первый: использовать вместо выражений привязок {{}} директиву ng-bind,
+    а второй использовать директиву ng-cloak-->
+    <!--директива ng-cloak применяет css для того чтобы спрятать элемент а angularjs после того как обработала этот элемент удаляет css селектор
+    и таким образом пользователь ни при каких условиях не увидит код angular-->
+    <!--есть два подхода к применению ng-cloak применить его к body но тогда пользователь ничего не увидит пока angular не обработает разметку
+    второй просто применять эту директиву там где непосредственно используются привязки-->
+    <script src="../angular.min%20.js"></script>
+    <link href="../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+            .controller("studyCtrl", function ($scope) {
+                $scope.data = {};
+                $scope.tasks = [
+                    { action: "Buy flowers", complete: false },
+                    { action: "Go to gym", complete: true },
+                    { action: "Buy snickers", complete: true },
+                    { action: "Buy notebook", complete: false },
+                    { action: "Call friends", complete: true },
+                    { action: "Go to cinema", complete: false },
+                    { action: "Buy Big-Mac", complete: true },
+                    { action: "Buy a book", complete: false },
+                    { action: "Call mom", complete: true }
+                ];
+            });
+    </script>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <div class="well">
+            <div class="radio" ng-repeat="button in ['Default', 'Table', 'List']">
+                <label ng-cloak>
+                    <input type="radio" ng-model="data.mode"
+                           value="{{button}}" ng-checked="$first">
+                    {{button}}
+                </label>
+            </div>
+        </div>
+        <div ng-switch on="data.mode" ng-cloak>
+            <div ng-switch-when="Table">
+                <table class="table">
+                    <thead>
+                        <tr><th>#</th><th>Tasks</th><th>Done</th></tr>
+                    </thead>
+                    <tr ng-repeat="task in tasks" ng-class="$odd ? 'odd' : 'even'">
+                        <td>{{$index + 1}}</td>
+                        <td ng-repeat="property in task">{{property}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div ng-switch-when="List">
+                <ol>
+                    <li ng-repeat="task in tasks">
+                        {{task.action}}<span ng-if="task.complete"> (Done)</span>
+                    </li>
+                </ol>
+            </div>
+            <div ng-switch-default>
+                Select another option to display a layout
+            </div>
+        </div>
+    </div>
+    <!--используйте директиву ng-switch когда вам нужно переключатся между небольшими участками разметки, которые вы хотите показать пользователю,
+        не следует использовать эте директиву если вы планируете показывать большие участки разметки так как то, чем оперирует ng-switch - это разметка
+        которая уже загружена, а значит вам прийдется загружать большие файлы, что влечет за собой уменьшение скорости-->
+        <!--ng-include следует использовать для более тяжелого контента или контента который вы планируете использовать в нескольких местах вашего приложения,
+         но следует помнить, что если вы используете ng-include, то у вас выполняется ajax запрос на сервер а это так же займет некоторое время, если этот запрос выполняется впервые-->    
+</body>
+</html>

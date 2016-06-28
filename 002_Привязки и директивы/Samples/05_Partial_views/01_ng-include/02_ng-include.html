@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html ng-app="studyModule">
+<head>
+    <title>ng-include</title>
+    <!--шаблоные директивы используются для того чтобы генерировать html по шаблону, облегчить работу с коллекциями даных и для добавления базовой логики на страницу-->
+    <script src="../../angular.min%20.js"></script>
+    <link href="../../bootstrap-theme.css" rel="stylesheet" />
+    <link href="../../bootstrap.css" rel="stylesheet" />
+    <script>
+        angular.module("studyModule", [])
+        .controller("studyCtrl", function ($scope) {
+            $scope.tasks = [
+                { action: "Buy flowers", complete: false },
+                { action: "Go to gym", complete: true },
+                { action: "Buy snickers", complete: true },
+                { action: "Buy notebook", complete: false },
+                { action: "Call friends", complete: true },
+                { action: "Go to cinema", complete: false },
+                { action: "Buy Big-Mac", complete: true },
+                { action: "Buy a book", complete: false },
+                { action: "Call mom", complete: true }
+            ];
+        });
+    </script>
+</head>
+<body>
+    <div id="tasksPanel" class="panel" ng-controller="studyCtrl">
+        <h3 class="panel-header">Tasks List</h3>
+        <ng-include src="'../table.html'"></ng-include>
+        <!--обратите внимание что путь к файлу взят в одинарные кавычки, потому что javascript обрабатывает его как выражение которое содержит статический путь к файлу-->
+        <!--директива ng-include запрашивает с сервера фрагмент html разметки,
+        компилирует его для обработки директив которе там могут быть и далее добавляет его в DOM, это аналог partial view-->
+        <p>Don't removed text</p>
+        <!--директиву ng-incude стоит применять только с открывающим и закрывающим тегами
+        так как если применить только один тег то все что содержится в DOM после этой директивы будет удалено, это можно увидеть на примере параграфа-->
+    </div>
+</body>
+</html>

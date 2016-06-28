@@ -1,0 +1,10 @@
+﻿<fruits>
+  <fruit name="Orange"  price="1.20"  />
+  <fruit name="Apple" price="2.42" />
+  <fruit name="Melon"   price="2.02"  />
+  <fruit name="Pear"   price="20.45" />
+  <fruit name="Watermelon" price="17.93" />
+  <fruit name="Coco"  price="14.01" />
+  <fruit name="Banana" price="11.34" />
+  <fruit name="Tangerine"  price="12.93" />
+</fruits>
